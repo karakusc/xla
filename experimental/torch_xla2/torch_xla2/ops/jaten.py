@@ -29,7 +29,7 @@ mutation_ops_to_functional = {
   torch.ops.aten.ge_: torch.ops.aten.ge,
   torch.ops.aten.eq_: torch.ops.aten.eq,
   torch.ops.aten.ne_: torch.ops.aten.ne,
-  torch.ops.aten.uniform_: torch.ops.aten.uniform,
+  # torch.ops.aten.uniform_: torch.ops.aten.uniform,
   torch.ops.aten.relu_: torch.ops.aten.relu,
 }
 
@@ -75,6 +75,7 @@ def _aten_add(x, y, *, alpha=1):
 
 @op(torch.ops.aten.copy_, torch.ops.aten.copy_.default, is_jax_function=False)
 def _aten_copy(x, y, memory_format=None):
+  print(x, type(x), y, type(y))
   if isinstance(x, tensor.XLATensor2):
     x._elem = y._elem
   elif isinstance(x, tensor.SliceView):
@@ -1906,6 +1907,22 @@ def _rand(
   if dtype is not None:
     res = res.astype(dtype)
   return res
+
+
+@op(torch.ops.aten.rand_like, needs_env=True)
+@op_base.convert_dtype()
+def _aten_rand_like(
+  input,
+  *,
+  dtype=None,
+  layout=None,
+  device=None,
+  requires_grad=False,
+  memory_format=torch.preserve_format,
+  env=None,
+):
+  key = env.get_and_rotate_prng_key()
+  return jax.random.uniform(key, dtype=dtype or input.dtype, shape=input.shape)
 
 
 @op(torch.ops.aten.scalar_tensor.default)
