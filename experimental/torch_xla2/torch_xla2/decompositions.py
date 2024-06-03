@@ -105,7 +105,4 @@ EXTRA_DECOMP = decomp.get_decompositions([
     torch.ops.aten.replication_pad1d,
     torch.ops.aten.replication_pad2d,
     torch.ops.aten.replication_pad3d,
-    torch.ops.aten.uniform_,
 ])
-
-EXTRA_DECOMP[torch.ops.aten.uniform] = torch.ops.aten.rand
