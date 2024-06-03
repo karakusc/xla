@@ -1887,7 +1887,7 @@ def _randn(
 
 @op(torch.ops.aten.randn_like, needs_env=True)
 @op_base.convert_dtype()
-def _aten_rand_like(
+def _aten_randn_like(
   x,
   *,
   dtype=None,
@@ -1950,7 +1950,8 @@ def _aten_uniform(
   env=None,
 ):
   key = env.get_and_rotate_prng_key(generator)
-  return jax.random.uniform(key, shape=x.shape, minval=low, maxval=high)
+  return jax.random.uniform(
+      key, shape=x.shape, dtype=x.dtype, minval=low, maxval=high)
 
 
 @op(torch.ops.aten.scalar_tensor.default)
