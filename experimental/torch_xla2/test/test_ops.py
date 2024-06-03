@@ -279,9 +279,7 @@ skiplist = {
     "put",
     "qr",
     "quantile",
-    "rand_like",
     "randint_like",
-    "randn_like",
     "renorm",
     "repeat_interleave",
     "resize_",
@@ -339,7 +337,6 @@ skiplist = {
     "unbind",
     "unfold_copy",
     "unfold",
-    # "uniform",
     "unique_consecutive",
     "unique",
     "unravel_index",
@@ -591,8 +588,12 @@ skiplist = {
 }
 
 random_ops = {
-  'randn',
   'empty',
+  'randn',
+  'randn_like',
+  'rand',
+  'rand_like',
+  'uniform',
 }
 
 def diff_output(testcase, output1, output2, rtol, atol, equal_nan=True):
